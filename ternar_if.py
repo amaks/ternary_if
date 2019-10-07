@@ -30,10 +30,13 @@ class TernarIfCommand(sublime_plugin.TextCommand):
             if ' == ' in i:
               new_line += i + '?'
             else:
-              new_line += ' ' + i.strip()
+              if split.index(i) == 0:
+                new_line += ' ' + i.strip() + ' ?'
+              else:
+                new_line += ' ' + i.strip()
 
       else:
-        split       = selected_area.split('?')
+        split       = selected_area.split(' ? ')
         first_part  = split[0]
         startrow, startcol = self.view.rowcol(region.begin())
         spaces    = [" " for x in range(startcol)]
@@ -50,14 +53,14 @@ class TernarIfCommand(sublime_plugin.TextCommand):
 
         if 'equal' in locals():
           new_line += ''.join(spaces) + '  ' + equal + ' ='
-        new_line += second_part + '\n'
+        new_line += '  ' + second_part + '\n'
 
         new_line += ''.join(spaces) + 'else\n'
 
         if 'equal' in locals():
           new_line += ''.join(spaces) + '  ' + equal + ' ='
 
-        new_line += third_part + '\n'
+        new_line += ' ' + third_part + '\n'
         new_line += 'end\n'
 
       self.view.replace(edit, region, new_line)
