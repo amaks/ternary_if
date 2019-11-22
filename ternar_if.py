@@ -1,5 +1,7 @@
 import sublime, sublime_plugin
 
+# shift + cmd + 5
+
 class TernarIfCommand(sublime_plugin.TextCommand):
   def run(self, edit):
     region = self.view.sel()[0]
